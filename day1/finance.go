@@ -9,14 +9,11 @@ import (
 func part1(reader io.Reader) int {
 	input := common.GetInts(reader)
 	// find the 2 numbers in input that add up to 2020
-	var a, b int
 	for _, x := range input {
-		a = x
 		for _, y := range input {
-			if a+y == 2020 {
-				b = y
+			if x+y == 2020 {
 				// then multiply together for result
-				return a * b
+				return x * y
 			}
 		}
 	}
