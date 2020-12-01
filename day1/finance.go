@@ -9,8 +9,8 @@ import (
 func part1(reader io.Reader) int {
 	input := common.GetInts(reader)
 	// find the 2 numbers in input that add up to 2020
-	for _, x := range input {
-		for _, y := range input {
+	for i, x := range input {
+		for _, y := range input[i:] {
 			if x+y == 2020 {
 				// then multiply together for result
 				return x * y
@@ -23,9 +23,9 @@ func part1(reader io.Reader) int {
 func part2(reader io.Reader) int {
 	input := common.GetInts(reader)
 	// find the 3 numbers in input that add up to 2020
-	for _, x := range input {
-		for _, y := range input {
-			for _, z := range input {
+	for i, x := range input {
+		for ii, y := range input[i:] {
+			for _, z := range input[ii:] {
 				if x+y+z == 2020 {
 					// then multiply together for result
 					return x * y * z
