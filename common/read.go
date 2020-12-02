@@ -10,6 +10,16 @@ import (
 	"strings"
 )
 
+// StringListFromFile parses new line separated text into a list of strings
+func StringListFromFile(reader io.Reader) []string {
+	data, err := ioutil.ReadAll(reader)
+	if err != nil {
+		panic(err)
+	}
+	lines := strings.Split(string(data), "\n")
+	return lines
+}
+
 // ReaderFromFile creates an io.Reader from supplied file or panics
 func ReaderFromFile(path string) io.Reader {
 	f, err := os.Open(path)
