@@ -59,3 +59,34 @@ func GetInts(reader io.Reader) []int {
 
 	return result
 }
+
+// Point is a grid coordinate, X horizontal y vertical
+type Point struct {
+	X, Y int
+}
+
+// ReadMap reads data from a read into a sparce map backed grid representation
+func ReadMap(reader io.Reader) (map[Point]rune, Point) {
+	data, err := ioutil.ReadAll(reader)
+	if err != nil {
+		panic(err)
+	}
+	lines := strings.Split(string(data), "\n")
+	grid := make(map[Point]rune)
+	var maxx, maxy int
+	for y, l := range lines {
+		if l == "" {
+			break
+		}
+		for x, c := range l {
+			p := Point{X: x, Y: y}
+			if c != '.' {
+				grid[p] = c
+			}
+			maxx = x
+			maxy = y
+		}
+	}
+
+	return grid, Point{maxx, maxy}
+}
