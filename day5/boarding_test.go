@@ -8,36 +8,6 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestBinarySplit(t *testing.T) {
-	tests := map[string]struct {
-		instructions string
-		left, right  rune
-		size         int
-		answer       int
-	}{
-		"frontBack": {
-			instructions: "FBFBBFF",
-			left:         'F',
-			right:        'B',
-			size:         128,
-			answer:       44,
-		},
-		"leftRight": {
-			instructions: "RLR",
-			left:         'L',
-			right:        'R',
-			size:         8,
-			answer:       5,
-		},
-	}
-	for name, test := range tests {
-		t.Run(name, func(t *testing.T) {
-			location := split(test.instructions, test.left, test.right, test.size)
-			assert.Equal(t, test.answer, location)
-		})
-	}
-}
-
 func TestProcess(t *testing.T) {
 
 	tests := map[string]struct {
@@ -76,5 +46,5 @@ func TestPart1(t *testing.T) {
 
 func TestPart2(t *testing.T) {
 	seatID := findTicket(common.ReaderFromFile(`input.txt`))
-	assert.Equal(t, 0, seatID)
+	assert.Equal(t, 524, seatID)
 }
