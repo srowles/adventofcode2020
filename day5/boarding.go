@@ -21,7 +21,7 @@ func process(instructions string) int {
 }
 
 func processTickets(reader io.Reader) int {
-	rows := common.StringListFromFile(reader)
+	rows := common.StringListFromReader(reader)
 	maxID := 0
 	for _, row := range rows {
 		if row == "" {
@@ -37,7 +37,7 @@ func processTickets(reader io.Reader) int {
 }
 
 func findTicket(reader io.Reader) int {
-	rows := common.StringListFromFile(reader)
+	rows := common.StringListFromReader(reader)
 	ids := make(map[int]bool)
 	max := 0
 	min := 999999999999

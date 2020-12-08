@@ -13,7 +13,7 @@ type form struct {
 
 func process(reader io.Reader) (int, int) {
 	var forms []form
-	lines := common.StringListFromFile(reader)
+	lines := common.StringListFromReader(reader)
 	p := form{answers: make(map[string]int)}
 	for _, l := range lines {
 		if l == "" {

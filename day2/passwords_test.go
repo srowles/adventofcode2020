@@ -73,7 +73,7 @@ func TestParseLine(t *testing.T) {
 }
 
 func TestPasswords(t *testing.T) {
-	count := processPasswords(common.StringListFromFile(common.ReaderFromFile("input1.txt")))
+	count := processPasswords(common.StringListFromReader(common.ReaderFromFile("input1.txt")))
 	assert.Equal(t, 560, count)
 }
 
@@ -109,6 +109,6 @@ func TestCheckPassword2(t *testing.T) {
 }
 
 func TestPasswords2(t *testing.T) {
-	count := processPasswords2(common.StringListFromFile(common.ReaderFromFile("input1.txt")))
+	count := processPasswords2(common.StringListFromReader(common.ReaderFromFile("input1.txt")))
 	assert.Equal(t, 303, count)
 }

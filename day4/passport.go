@@ -181,7 +181,7 @@ type Passports struct {
 
 func parse(reader io.Reader) *Passports {
 	var passports []Passport
-	lines := common.StringListFromFile(reader)
+	lines := common.StringListFromReader(reader)
 	p := make(map[string]string)
 	for _, l := range lines {
 		if l == "" {

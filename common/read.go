@@ -10,8 +10,8 @@ import (
 	"strings"
 )
 
-// StringListFromFile parses new line separated text into a list of strings
-func StringListFromFile(reader io.Reader) []string {
+// StringListFromReader parses new line separated text into a list of strings
+func StringListFromReader(reader io.Reader) []string {
 	data, err := ioutil.ReadAll(reader)
 	if err != nil {
 		panic(err)
