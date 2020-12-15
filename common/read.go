@@ -38,6 +38,27 @@ func ReaderFromInts(input []int) io.Reader {
 	return bytes.NewReader([]byte(builder.String()))
 }
 
+// IntList comma separated single line list of numbers
+func IntList(reader io.Reader) []int {
+	data, err := ioutil.ReadAll(reader)
+	if err != nil {
+		panic(err)
+	}
+	numbers := strings.Split(string(data), ",")
+	result := make([]int, 0, len(numbers))
+	for _, l := range numbers {
+		if strings.TrimSpace(l) == "" {
+			continue
+		}
+		n, err := strconv.Atoi(l)
+		if err != nil {
+			panic(err)
+		}
+		result = append(result, n)
+	}
+	return result
+}
+
 // GetInts returns a slice of ints from a file
 func GetInts(reader io.Reader) []int {
 	data, err := ioutil.ReadAll(reader)
