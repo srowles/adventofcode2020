@@ -83,7 +83,7 @@ func GetInts(reader io.Reader) []int {
 
 // Point is a grid coordinate, X horizontal y vertical
 type Point struct {
-	X, Y int
+	X, Y, Z, W int
 }
 
 // ReadMap reads data from a read into a sparce map backed grid representation
@@ -109,5 +109,5 @@ func ReadMap(reader io.Reader) (map[Point]rune, Point) {
 		}
 	}
 
-	return grid, Point{maxx, maxy}
+	return grid, Point{maxx, maxy, 0, 0}
 }

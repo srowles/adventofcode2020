@@ -20,18 +20,18 @@ func TestMapRead(t *testing.T) {
 			input: `..
 ..`,
 			expected: map[Point]rune{},
-			size:     Point{1, 1},
+			size:     Point{X: 1, Y: 1, Z: 0, W: 0},
 		},
 		"full": {
 			input: `XY
 #$`,
 			expected: map[Point]rune{
-				Point{0, 0}: 'X',
-				Point{1, 0}: 'Y',
-				Point{0, 1}: '#',
-				Point{1, 1}: '$',
+				Point{X: 0, Y: 0, Z: 0, W: 0}: 'X',
+				Point{X: 1, Y: 0, Z: 0, W: 0}: 'Y',
+				Point{X: 0, Y: 1, Z: 0, W: 0}: '#',
+				Point{X: 1, Y: 1, Z: 0, W: 0}: '$',
 			},
-			size: Point{1, 1},
+			size: Point{1, 1, 0, 0},
 		},
 	}
 
