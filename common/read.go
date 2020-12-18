@@ -6,17 +6,13 @@ import (
 	"io"
 	"io/ioutil"
 	"os"
-	"strconv"
 	"strings"
 )
 
 // StringListFromReader parses new line separated text into a list of strings
 func StringListFromReader(reader io.Reader) []string {
-	data, err := ioutil.ReadAll(reader)
-	if err != nil {
-		panic(err)
-	}
-	lines := strings.Split(string(data), "\n")
+	data := mustReadStringData(reader)
+	lines := strings.Split(data, "\n")
 	return lines
 }
 
@@ -40,42 +36,28 @@ func ReaderFromInts(input []int) io.Reader {
 
 // IntList comma separated single line list of numbers
 func IntList(reader io.Reader) []int {
-	data, err := ioutil.ReadAll(reader)
-	if err != nil {
-		panic(err)
-	}
-	numbers := strings.Split(string(data), ",")
+	data := mustReadStringData(reader)
+	numbers := strings.Split(data, ",")
 	result := make([]int, 0, len(numbers))
 	for _, l := range numbers {
 		if strings.TrimSpace(l) == "" {
 			continue
 		}
-		n, err := strconv.Atoi(l)
-		if err != nil {
-			panic(err)
-		}
-		result = append(result, n)
+		result = append(result, MustInt(l))
 	}
 	return result
 }
 
 // GetInts returns a slice of ints from a file
 func GetInts(reader io.Reader) []int {
-	data, err := ioutil.ReadAll(reader)
-	if err != nil {
-		panic(err)
-	}
-	lines := strings.Split(string(data), "\n")
+	data := mustReadStringData(reader)
+	lines := strings.Split(data, "\n")
 	result := make([]int, 0, len(lines))
 	for _, l := range lines {
 		if strings.TrimSpace(l) == "" {
 			continue
 		}
-		n, err := strconv.Atoi(l)
-		if err != nil {
-			panic(err)
-		}
-		result = append(result, n)
+		result = append(result, MustInt(l))
 	}
 
 	return result
@@ -88,11 +70,8 @@ type Point struct {
 
 // ReadMap reads data from a read into a sparce map backed grid representation
 func ReadMap(reader io.Reader) (map[Point]rune, Point) {
-	data, err := ioutil.ReadAll(reader)
-	if err != nil {
-		panic(err)
-	}
-	lines := strings.Split(string(data), "\n")
+	data := mustReadStringData(reader)
+	lines := strings.Split(data, "\n")
 	grid := make(map[Point]rune)
 	var maxx, maxy int
 	for y, l := range lines {
@@ -110,4 +89,12 @@ func ReadMap(reader io.Reader) (map[Point]rune, Point) {
 	}
 
 	return grid, Point{maxx, maxy, 0, 0}
+}
+
+func mustReadStringData(reader io.Reader) string {
+	data, err := ioutil.ReadAll(reader)
+	if err != nil {
+		panic(err)
+	}
+	return string(data)
 }
