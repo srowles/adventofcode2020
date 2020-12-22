@@ -1,8 +1,10 @@
 package day18
 
 import (
+	"fmt"
 	"io"
-	"unicode"
+	"strconv"
+	"strings"
 
 	"github.com/srowles/adventofcode2020/common"
 )
@@ -11,7 +13,24 @@ func process(reader io.Reader) int {
 	lines := common.StringListFromReader(reader)
 	result := 0
 	for _, line := range lines {
-		result += parseSum(line)
+		if line == "" {
+			continue
+		}
+		result += parseSum(strings.ReplaceAll(line, " ", ""))
+	}
+
+	return result
+}
+
+func process2(reader io.Reader) int {
+	lines := common.StringListFromReader(reader)
+	result := 0
+	for _, line := range lines {
+		if line == "" {
+			continue
+		}
+		val := parseSumWithPrecedence(line)
+		result += val
 	}
 
 	return result
@@ -30,9 +49,6 @@ func parseSum(sum string) int {
 	stack := new(common.IntStack)
 	stack.Push(0)
 	for _, part := range sum {
-		if unicode.IsSpace(part) {
-			continue
-		}
 		v := int(part - '0')
 		switch part {
 		case '(':
@@ -68,4 +84,66 @@ func parseSum(sum string) int {
 
 	val := stack.Pop()
 	return val
+}
+
+func parseSumWithPrecedence(sum string) int {
+	line := []rune(sum)
+	// scan backwards through the sum finding bracket groups
+	// to recursively process
+	end := 0
+
+	for i := len(line) - 1; i >= 0; i-- {
+		switch line[i] {
+		case ' ':
+			continue
+		case ')':
+			end = i
+		case '(':
+			v := parseSumWithPrecedence(string(line[i+1 : end]))
+			val := []rune(fmt.Sprintf("%d", v))
+			tail := append(val, line[end+1:]...)
+			line = append(line[:i], tail...)
+			for p := i; p < len(line); p++ {
+				if line[p] == ')' {
+					end = p
+				}
+			}
+		}
+	}
+	sum = string(line)
+	// next do addition first scanning forwards
+outer:
+	for strings.Contains(sum, "+") {
+		prev := 0
+		var op string
+		for _, f := range strings.Fields(sum) {
+			n, _ := strconv.Atoi(f)
+			switch f {
+			case "+":
+				op = "+"
+			case "*":
+				op = "*"
+			default:
+				if op == "+" {
+					v := prev + n
+					sum = strings.Replace(sum, fmt.Sprintf("%d + %d", prev, n), fmt.Sprintf("%d", v), 1)
+					continue outer
+				}
+				prev = n
+			}
+		}
+	}
+
+	// perform last multiplications, nothing else left
+	result := 1
+	for _, f := range strings.Fields(sum) {
+		n, _ := strconv.Atoi(f)
+		switch f {
+		case "*":
+		default:
+			result *= n
+		}
+	}
+
+	return result
 }
